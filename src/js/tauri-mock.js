@@ -39,8 +39,8 @@ if (!window.__TAURI__ && location.port === '3111') {
 
     // Sample local (Piper) voice catalog so the download/delete UI can be exercised.
     const mockLocalVoices = [
-        { id: 'vi_VN-vais1000-medium', display: 'Tiếng Việt — VAIS1000 (medium)', lang: 'vi', url: '', approxSizeBytes: 67154040, sampleRate: 22050, installed: true, installedBytes: 67154040, imported: false },
-        { id: 'vi_VN-25hours_single-low', display: 'Tiếng Việt — 25 hours (low)', lang: 'vi', url: '', approxSizeBytes: 67059380, sampleRate: 16000, installed: false, installedBytes: null, imported: false },
+        { id: 'vi_VN-vais1000-medium', display: 'Vietnamese — VAIS1000 (medium)', lang: 'vi', url: '', approxSizeBytes: 67154040, sampleRate: 22050, installed: true, installedBytes: 67154040, imported: false },
+        { id: 'vi_VN-25hours_single-low', display: 'Vietnamese — 25 hours (low)', lang: 'vi', url: '', approxSizeBytes: 67059380, sampleRate: 16000, installed: false, installedBytes: null, imported: false },
         { id: 'en_US-ryan-medium', display: 'English (US) — Ryan (medium)', lang: 'en', url: '', approxSizeBytes: 63000000, sampleRate: 22050, installed: true, installedBytes: 63000000, imported: false },
         { id: 'en_US-lessac-medium', display: 'English (US) — Lessac (medium)', lang: 'en', url: '', approxSizeBytes: 67230653, sampleRate: 22050, installed: false, installedBytes: null, imported: false },
         // Sample imported (local) voices — always shown regardless of language filter.

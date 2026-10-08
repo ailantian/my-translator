@@ -159,8 +159,8 @@ class App {
                 // Platform-accurate label: Mac Intel needs Apple Silicon;
                 // Windows/Linux aren't supported at all.
                 const reason = this._platformOs === 'macos'
-                    ? ' — cần chip Apple Silicon'
-                    : ' — chỉ hỗ trợ macOS Apple Silicon';
+                    ? ' — requires an Apple Silicon chip'
+                    : ' — macOS Apple Silicon only';
                 localOption.textContent += reason;
             }
 
@@ -757,7 +757,7 @@ class App {
         if (subT) {
             subT.textContent =
                 `${engineNames[mode] || mode} · ${s.source_language || 'auto'} → ${s.target_language || 'vi'}` +
-                (hasKey ? '' : ' · ⚠️ chưa có API key');
+                (hasKey ? '' : ' · ⚠️ no API key');
         }
 
         // TTS card: cloud-realtime engines run text-only — reflect on the card, never hide.
@@ -771,7 +771,7 @@ class App {
         if (cardTts) cardTts.classList.toggle('disabled', isCloudRealtime);
         if (subTts) {
             if (isCloudRealtime) {
-                subTts.textContent = `Tắt — engine ${engineNames[mode]} chạy dạng chữ, không đọc tiếng`;
+                subTts.textContent = `Off — the ${engineNames[mode]} engine outputs text only, no speech`;
             } else {
                 const prov = s.tts_provider || 'edge';
                 const voice = prov === 'local' && s.local_tts_voice ? ` · ${s.local_tts_voice}` : '';
@@ -1570,7 +1570,7 @@ class App {
             settingsManager.save({ [key]: e.target.value });
             this._showReadCapabilityHint();
         });
-        // "Chỉnh thêm…" deep-links to Settings → TTS detail
+        // "More options…" deep-links to Settings → TTS detail
         document.getElementById('btn-read-tts-settings')?.addEventListener('click', () => {
             this._showView('settings');
             this._showSettingsScreen('tab-tts');
@@ -1579,7 +1579,7 @@ class App {
         const autoHideBtn = document.getElementById('btn-auto-hide');
         const renderAutoHide = () => {
             if (autoHideBtn) {
-                autoHideBtn.textContent = `${isAutoHideEnabled() ? '✓' : '　'} Tự ẩn khi đang dịch`;
+                autoHideBtn.textContent = `${isAutoHideEnabled() ? '✓' : '　'} Auto-hide while translating`;
             }
         };
         renderAutoHide();
@@ -1680,17 +1680,17 @@ class App {
         const provider = settings.tts_provider || 'edge';
         const tts = this._getActiveTTS();
         if (typeof tts.synthesize !== 'function') {
-            return { ok: false, reason: 'Nhà cung cấp TTS này không hỗ trợ chế độ Đọc. Hãy chọn Edge, Local, Microsoft, Google hoặc TikTok.' };
+            return { ok: false, reason: 'This TTS provider does not support Read mode. Choose Edge, Local, Microsoft, Google or TikTok.' };
         }
         if (provider === 'google' && !settings.google_tts_api_key) {
-            return { ok: false, reason: 'Thiếu Google Cloud API key (Cài đặt → TTS → Google).' };
+            return { ok: false, reason: 'Missing Google Cloud API key (Settings → TTS → Google).' };
         }
         if (provider === 'tiktok' && !settings.tiktok_session_id) {
-            return { ok: false, reason: 'Thiếu TikTok sessionid (Cài đặt → TTS → TikTok).' };
+            return { ok: false, reason: 'Missing TikTok sessionid (Settings → TTS → TikTok).' };
         }
         if (provider === 'local') {
             const installed = await this._isLocalVoiceInstalled(settings.local_tts_voice);
-            if (!installed) return { ok: false, reason: 'Chưa tải model giọng Local (Cài đặt → TTS → Local).' };
+            if (!installed) return { ok: false, reason: 'Local voice model is not downloaded yet (Settings → TTS → Local).' };
         }
         return { ok: true, provider };
     }
@@ -1709,7 +1709,7 @@ class App {
         if (!cap.ok) { this._showReadCapabilityHint(); return; }
 
         const text = (document.getElementById('read-input')?.value || '').trim();
-        if (!text) { this._showToast('Nhập văn bản để đọc', 'error'); return; }
+        if (!text) { this._showToast('Enter text to read', 'error'); return; }
 
         const settings = settingsManager.get();
         const provider = cap.provider;
@@ -1740,7 +1740,7 @@ class App {
         this._reader.onState = (state) => this._onReadState(state);
 
         this._reader.load(text, maxLen);
-        if (this._reader.total === 0) { this._showToast('Không có nội dung để đọc', 'error'); return; }
+        if (this._reader.total === 0) { this._showToast('No content to read', 'error'); return; }
         this._renderReadChunks(this._reader.chunks);
         this._reader.play();
     }
@@ -1823,7 +1823,7 @@ class App {
 
     _updateReadProgress(n, total) {
         const prog = document.getElementById('read-progress');
-        if (prog) prog.textContent = `đoạn ${n}/${total}`;
+        if (prog) prog.textContent = `part ${n}/${total}`;
         const fill = document.getElementById('read-progress-fill');
         if (fill) fill.style.width = total ? `${Math.round((n / total) * 100)}%` : '0%';
     }
@@ -1953,7 +1953,7 @@ class App {
         }
         // Highlight a warning when the picked engine can't run yet — either
         // Local MLX on unsupported hardware, or a cloud engine missing its key.
-        // The option stays selectable (Hiếu's ask): the user needs to pick it
+        // The option stays selectable (requested by a user): the user needs to pick it
         // to add the key; start() blocks launch until the requirement is met.
         const s = settingsManager.get();
         const localUnsupported = isLocal && !this.isAppleSilicon;
@@ -1966,10 +1966,10 @@ class App {
             hintSoniox.classList.toggle('hint-warning', warn);
             if (localUnsupported) {
                 hintSoniox.textContent = this._platformOs === 'macos'
-                    ? '⚠️ Local MLX cần chip Apple Silicon — máy này không chạy được, hãy chọn engine khác.'
-                    : '⚠️ Local MLX chỉ chạy trên macOS Apple Silicon — trên máy này hãy chọn engine khác.';
+                    ? '⚠️ Local MLX requires an Apple Silicon chip — this machine cannot run it, choose another engine.'
+                    : '⚠️ Local MLX only runs on macOS Apple Silicon — on this machine choose another engine.';
             } else if (missingKey) {
-                hintSoniox.textContent = `⚠️ ${missingKey} cần API key — nhập key bên dưới rồi mới bắt đầu được.`;
+                hintSoniox.textContent = `⚠️ ${missingKey} needs an API key — enter it below before starting.`;
             }
         }
         if (hintLocal) hintLocal.style.display = 'none';
@@ -2119,11 +2119,11 @@ class App {
             const openaiOpt = select.querySelector('option[value="openai"]');
             if (sonioxOpt) {
                 sonioxOpt.disabled = false;
-                sonioxOpt.textContent = sonioxOk ? '☁️ Soniox' : '☁️ Soniox — cần nhập key';
+                sonioxOpt.textContent = sonioxOk ? '☁️ Soniox' : '☁️ Soniox — API key required';
             }
             if (openaiOpt) {
                 openaiOpt.disabled = false;
-                openaiOpt.textContent = openaiOk ? '⚡ OpenAI Realtime' : '⚡ OpenAI Realtime — cần nhập key';
+                openaiOpt.textContent = openaiOk ? '⚡ OpenAI Realtime' : '⚡ OpenAI Realtime — API key required';
             }
         }
     }
@@ -2207,7 +2207,7 @@ class App {
         // Local MLX needs macOS Apple Silicon — block here (option is selectable
         // but can't actually run on other platforms) instead of crashing.
         if (this.translationMode === 'local' && !this.isAppleSilicon) {
-            this._showToast('Local MLX chỉ chạy trên macOS Apple Silicon. Hãy chọn engine khác trong Cài đặt.', 'error');
+            this._showToast('Local MLX only runs on macOS Apple Silicon. Choose another engine in Settings.', 'error');
             this._showView('settings');
             return;
         }
@@ -2923,7 +2923,7 @@ class App {
         iconPlay.style.display = this.isRunning ? 'none' : 'block';
         iconStop.style.display = this.isRunning ? 'block' : 'none';
         const label = document.getElementById('btn-start-label');
-        if (label) label.textContent = this.isRunning ? 'Dừng' : 'Bắt đầu';
+        if (label) label.textContent = this.isRunning ? 'Stop' : 'Start';
 
         // Pause is only actionable while running. (Don't also gate on isStarting:
         // start() calls this while isStarting is still true, and the click handler
@@ -2999,7 +2999,7 @@ class App {
                 break;
         }
         // Live tab shows a red badge while a session runs so the user sees
-        // recording state even from the Đọc / Thư viện activities.
+        // recording state even from the Read / Library activities.
         setLiveBadge(this.isRunning);
         // Auto-hide chrome only while translating (idle 3s → hide, hover/keys → show)
         if (this.isRunning) startAutoHideWatch();
