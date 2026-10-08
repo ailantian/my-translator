@@ -53,7 +53,7 @@ pub const CUSTOM_VI_BASE: &str =
 pub const CATALOG: &[VoiceEntry] = &[
     VoiceEntry {
         id: "vi_VN-vais1000-medium",
-        display: "Tiếng Việt — VAIS1000 (medium)",
+        display: "Vietnamese — VAIS1000 (medium)",
         lang: "vi",
         package: "vits-piper-vi_VN-vais1000-medium",
         base_url: RELEASE_BASE,
@@ -63,7 +63,7 @@ pub const CATALOG: &[VoiceEntry] = &[
     },
     VoiceEntry {
         id: "vi_VN-25hours_single-low",
-        display: "Tiếng Việt — 25 hours (low)",
+        display: "Vietnamese — 25 hours (low)",
         lang: "vi",
         package: "vits-piper-vi_VN-25hours_single-low",
         base_url: RELEASE_BASE,
@@ -95,7 +95,7 @@ pub const CATALOG: &[VoiceEntry] = &[
     // hosted on this repo's `tts-models-vi` release. Contributed by @quanhieu.
     VoiceEntry {
         id: "adam1",
-        display: "Tiếng Việt — Adam (custom)",
+        display: "Vietnamese — Adam (custom)",
         lang: "vi",
         package: "vits-piper-adam1",
         base_url: CUSTOM_VI_BASE,
@@ -105,7 +105,7 @@ pub const CATALOG: &[VoiceEntry] = &[
     },
     VoiceEntry {
         id: "minhquang",
-        display: "Tiếng Việt — Minh Quang (custom)",
+        display: "Vietnamese — Minh Quang (custom)",
         lang: "vi",
         package: "vits-piper-minhquang",
         base_url: CUSTOM_VI_BASE,
